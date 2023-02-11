@@ -1,22 +1,30 @@
-const jsonURL = 'http://localhost:3000/pups/'
-const filterActive = false
+const jsonURL = 'http://localhostgit:3000/pups/'
+let filterActive = false
 
 // JSONDATA: id, name, isGoodDog, image
 
 
+// build div bar with dog names... takes into account filter
 function buildDivBar(array){
     const divDogBar = document.getElementById('dog-bar')
+    divDogBar.innerHTML =''
 
-
+    // if filter is active, don't include bad dogs 
     array.forEach(obj => {
+
         const span = document.createElement('span')
         
         span.innerText = obj.name
-        span.dataset.id = obj.id
-        span.dataset.isGoodDog = obj.isGoodDog
+        span.dataset.id = obj.id // important, this is how i pass ID to get request
         span.addEventListener('click', e => getData(e.target.dataset.id))
 
-        divDogBar.append(span)
+        // LOGIC FOR FILTER
+        if (!filterActive){
+            divDogBar.append(span)
+        } else if (filterActive && obj.isGoodDog){
+            divDogBar.append(span)
+        }
+        
     });
 }
 
@@ -85,26 +93,9 @@ function handleFilter(e){
         filterActive = true
     }
 
-    toggleDivBar()
+    getData()
 }
 
-
-
-// redo this
-function toggleDivBar(){
-    const goodDogSpans = [...document.querySelectorAll('span[data-is-good-dog="false"]')]
-
-    if (span.dataset.isGoodDog === "false"){
-        span.style.display = "none"
-
-    } else {
-        console.log('is this happening?')
-        span.style.display = "flex"
-
-    //     }
-    // })
-}
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     getData()
@@ -186,3 +177,17 @@ optional:
 
 
 */
+// function toggleDivBar(){
+//     const goodDogSpans = [...document.querySelectorAll('span[data-is-good-dog="false"]')]
+
+//     if (span.dataset.isGoodDog === "false"){
+//         span.style.display = "none"
+
+//     } else {
+//         console.log('is this happening?')
+//         span.style.display = "flex"
+
+//     //     }
+//     // })
+// }
+// }
